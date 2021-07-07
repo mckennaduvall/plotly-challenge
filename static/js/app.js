@@ -22,6 +22,8 @@
 
         filterData = filterData[0]
 
+        //bar chart
+
         var barData = [{
             x: filterData.sample_values.slice(0,10).reverse(), 
             y: `${filterData.otu_ids.slice(0,10).reverse()}`,
@@ -37,14 +39,17 @@
        
         Plotly.newPlot("bar", barData, layout);
 
+        //bubble chart
+
+        
         
         var bubbleData = [{ 
-            x: `${filterData.otu_ids}`,
+            x: subjectId,
             y: filterData.sample_values,
             mode: 'markers',
             marker : {
                 color: `${filterData.otu_ids}`,
-                size: filterData.sample_values
+                size: sampleData.sample_values
             }
         }];
 
@@ -55,7 +60,29 @@
         Plotly.newPlot("bubble", bubbleData, bubbleLayout)
     
 
-        var dropDown = d3.select("#selDataset")
-        dropDown.on("change", optionChange)
+        //demographics table 
+        var metadata = data.metadata
+        console.log(metadata)
+
+        var filterMetadata = metadata.filter(individual => individual.id[0])
+        console.log(filterMetadata)
+
+        var demographicsTable = d3.select("#sample-metadata");
+        
+
+        Object.entries(filterMetadata).forEach(([key, value])=> {
+            demographicsTable.append(`${key} : ${value}`);
+
+        });
+
+
+        d3.selectAll("#selDataset").on("change", updatePlotly);
+
+        function updatePlotly() {
+            var dropDown = d3.select("#selDataset")
+
+            var dataset = dropDown.property("value")
+        };
+
 
     });
