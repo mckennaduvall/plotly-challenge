@@ -37,9 +37,25 @@
        
         Plotly.newPlot("bar", barData, layout);
 
+        
+        var bubbleData = [{ 
+            x: `${filterData.otu_ids}`,
+            y: filterData.sample_values,
+            mode: 'markers',
+            marker : {
+                color: `${filterData.otu_ids}`,
+                size: filterData.sample_values
+            }
+        }];
 
+        var bubbleLayout = {
+            title: "Belly Button"
+        };
+
+        Plotly.newPlot("bubble", bubbleData, bubbleLayout)
+    
 
         var dropDown = d3.select("#selDataset")
         dropDown.on("change", optionChange)
 
-     });
+    });
